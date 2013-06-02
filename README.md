@@ -41,63 +41,45 @@ Essentially, this enters the `project` project, cleans it, and returns back to y
 
 ## Usage
 
-To use sbt-sublime, simply enter the `gen-sublime` command in the sbt console to create the project file. When the command is done, open the new Sublime project created to see your own sources and external library sources.
+### Sounds
 
-## Functionality
+The sbt-sound jar comes pre-loaded with 14 sounds (shamelessly copied from Mountain Lion sounds folder, hope I won't get in trouble for this):
 
-* Creates a `.sublime-project` project file for your project. The default project file created will include the project's base directory and the special external library sources directory. If a project file already exists, the plugin will keep all existing settings in the file and only add the external sources directory. You don't have to worry about losing your Sublime project's settings.
+* Basso
+* Blow
+* Bottle
+* Frog
+* Funk
+* Glass
+* Hero
+* Morse
+* Ping
+* Pop
+* Purr
+* Sosumi
+* Submarine
+* Tink
 
-* Automatically fetches sources available for all dependencies.
+You can also specify any `.wav` or `.aiff` file on your local machine (maybe other formats work, these are the ones I tested with).
 
-* Allows fetching all dependencies transitively – have access to the sources of all libraries that your own dependencies require. This can quickly escalate to *a lot* of source code, so the default behavior is to not fetch dependencies transitively, only your direct dependencies (see [next section](https://github.com/orrsella/sbt-sublime#configuration)).
+### Configuration
 
-* Works with multi-project build configurations. In this scenario, external libraries will include the dependencies of all projects combined. **Important:** make sure to run the `gen-sublime` command on the root project. Otherwise, you'll create a Sublime project for the sub-project you ran the command on. Not the end of the world, but probably not what you meant to happen.
-
-## Configuration
-
-The following custom sbt settings are used:
-
-* `sublimeExternalSourceDirectoryName` – The name of the directory containing all external library source files. Default value: `External Libraries`.
-
-* `sublimeExternalSourceDirectoryParent` – Where the external library sources directory will be located. Default value: sbt's `target` setting. If left unchanged, running the `clean` command will delete the sources folder. To have it persist, change it's parent away from the target folder.
-
-* `sublimeTransitive` – Indicates whether dependencies should be added transitively (recursively) for all libraries (including the libraries that your own dependencies require – "your dependencies' dependencies"). For large projects, this can amount to dozens of libraries pretty quickly, meaning that *a lot* of code will be searched and handled by Sublime. See if appropriate for your own project. Default value: `false`.
-
-* `sublimeProjectName` – The name of the generated Sublime project file, not including the ".sublime-project" extension. Default value: sbt's `name` setting, that is your project's name as you define it in `build.sbt`.
-
-* `sublimeProjectDir` – Where the generated Sublime project file will be saved. Default value: sbt's `baseDirectory` setting, that is the root of your project. This can be set to anywhere on your machine, it doesn't have to be in the project's root directory (but would be convenient). If you already have a project file, or like to keep all project files together in some special folder, just point there.
-
-To change any/all of these settings (to these arbitrary alternative values), add the following to your `build.sbt` file:
+After enabling the plugin as detailed above, you can configure it by adding any of the following to `build.sbt`:
 
 ```scala
-sublimeExternalSourceDirectoryName := "ext-lib-src"
+sound.play(compile in Compile, Sounds.Basso) // play the 'Basso' sound whenever compile completes (successful or not)
 
-sublimeExternalSourceDirectoryParent <<= crossTarget
+sound.play(compile in Compile, Sounds.None, Sounds.Pop) // play the 'Pop' sound only when compile fails
 
-sublimeTransitive := true
-
-sublimeProjectName := "MySublProjectFile"
-
-sublimeProjectDir := new java.io.File("/Users/orr/Dev/Projects")
+sound.play(test in Test, Sounds.Purr, "/Users/me/Sounds/my-sound.wav") // play 'Purr' when test completes successfully, and
+                                                                       // play the local 'my-sound' wav file when it fails
 ```
 
-## Notes
+You can configure any TaskKey in the above way
 
-* The external library sources directory is considered as artifacts and located by default in `target`, and so running the `clean` command will delete it. But don't worry – you can always re-run `gen-sublime` to get it back, or change `sublimeExternalSourceDirectoryParent` to have it reside out side of the `target` folder and not get deleted during `clean`.
+### Stacking
 
-* When running the `gen-sublime` command the existing library sources directory is deleted, and a new one is created.
-
-* All library source files are intentionally marked as read-only so you won't be able to save changes to them. This is mainly to remind you that changing these sources has *absolutely no* effect on the libraries you're using! **This is important** – just because the sources are available doesn't mean they are used in compilation/runtime. These are merely extracted from the source jars for each dependency, as fetched by sbt. If you want to change and edit the external libraries you're using, *this is not the way*. Add them as an sbt project or manually to your own project as source files, to make any changes and compile. Again, this plugin only allows to quickly add the sources to the same Sublime window for convenience purposes only. Sbt doesn't compile *anything* in the `sublimeExternalSourceDirectoryName` folder!
-
-* If you change any of the library dependencies or the specific settings detailed in [Configuration](https://github.com/orrsella/sbt-sublime#configuration), you'll need to reload the sbt project with the `reload` command, and then execute `gen-sublime` again. This will add/remove dependencies' sources accordingly, making sure the list in up-to-date.
-
-* If you change the name of the external sources directory (`sublimeExternalSourceDirectoryName`), you might need to close and re-open the Sublime project for the change to take effect.
-
-* All other Sublime project settings should remain intact when using the plugin, don't be afraid to tweak it if you want.
-
-* Sources, as do dependencies, are usually appropriate for the `scalaVersion` you're using. Changing it and re-running the `gen-sublime` command will update sources accordingly.
-
-* Consider adding the .sublime-project file to `.gitignore` and `file_exclude_patterns` (in sublime's preferences) to not commit and/or display the project file in Sublime, if it's saved to it's default location in the root folder.
+The way sbt-sound works is by adding `mapR` to every task's completion. Because the functionality is tucked on every task, running tasks that depend on other tasks (and execute them), will cause all sounds in the chain to play. So if for example you specify a sound for `compile` and `test`, and when running `test` the code compiles because of the `compile` command, both sounds will play. Take that into consideration when configuration which tasks to play sounds for.
 
 ## Feedback
 
