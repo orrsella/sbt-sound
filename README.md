@@ -72,7 +72,7 @@ sound.play(compile in Compile, Sounds.Basso) // play the 'Basso' sound whenever 
 sound.play(compile in Compile, Sounds.None, Sounds.Pop) // play the 'Pop' sound only when compile fails
 
 sound.play(test in Test, Sounds.Purr, "/Users/me/Sounds/my-sound.wav") // play 'Purr' when test completes successfully
-                                                                       // or the local 'my-sound' wav file when it fails
+                                                                       // or the wav file 'my-sound' when it fails
 ```
 
 You can configure any (and as many as you like) sbt `TaskKey`s in the above way.
