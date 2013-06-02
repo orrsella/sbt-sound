@@ -2,14 +2,14 @@
 
 An [sbt](http://www.scala-sbt.org/) (Simple Build Tool) plugin for adding sounds to sbt's task completions.
 
-This plugin allows you to associate sounds with successful and/or failed task completions, giving you audio feedback. Any TaskKey can have a sound association. This is especially useful for:
+This plugin allows you to associate sounds with successful and/or failed task completions, giving you audio feedback. Any `TaskKey` can have a sound association. This is especially useful for:
 
 * Long build times
 * A failing `~compile` that is running in the background/behind other windows
 * A failing `~test`
 * Drawing your attention to any specific task outcome
 
-The reason I wrote this plugin is that I usually code with a running sbt `~compile` in the background, and would like to know asap when something brakes. I code in [Sublime Text](http://www.sublimetext.com/) (see [my plugin for it](https://github.com/orrsella/sbt-sublime)), and when I'm not connected to an external monitor I have sbt in the background, periodically checking it to see everything's fine. This plugin solves this problem for me, only drawing my attention when the build breaks. I think others could find this plugin useful in other ways as well.
+The reason I wrote this plugin is that I usually code with a running sbt `~compile` in the background, and would like to know asap when something breaks. I code in [Sublime Text](http://www.sublimetext.com/) (see [my plugin for it](https://github.com/orrsella/sbt-sublime)), and when I'm not connected to an external monitor I have sbt in the background, periodically checking it to see everything's fine. This plugin solves this problem for me, only drawing my attention when the build breaks. I think others could find this plugin useful in other ways as well.
 
 ## Add Plugin
 
@@ -43,7 +43,7 @@ Essentially, this enters the `project` project, cleans it, and returns back to y
 
 ### Sounds
 
-The sbt-sound jar comes pre-loaded with 14 sounds (shamelessly copied from Mountain Lion sounds folder, hope I won't get in trouble for this):
+The sbt-sound jar comes pre-loaded with 14 sounds (shamelessly copied from Mountain Lion's sounds folder, hope I won't get in trouble for this):
 
 * Basso
 * Blow
@@ -60,7 +60,7 @@ The sbt-sound jar comes pre-loaded with 14 sounds (shamelessly copied from Mount
 * Submarine
 * Tink
 
-You can also specify any `.wav` or `.aiff` file on your local machine (maybe other formats work, these are the ones I tested with).
+You can also specify any `.wav` or `.aiff` file on your local machine (maybe other formats work as well, these are the ones I tested with).
 
 ### Configuration
 
@@ -71,15 +71,15 @@ sound.play(compile in Compile, Sounds.Basso) // play the 'Basso' sound whenever 
 
 sound.play(compile in Compile, Sounds.None, Sounds.Pop) // play the 'Pop' sound only when compile fails
 
-sound.play(test in Test, Sounds.Purr, "/Users/me/Sounds/my-sound.wav") // play 'Purr' when test completes successfully, and
-                                                                       // play the local 'my-sound' wav file when it fails
+sound.play(test in Test, Sounds.Purr, "/Users/me/Sounds/my-sound.wav") // play 'Purr' when test completes successfully
+                                                                       // or the local 'my-sound' wav file when it fails
 ```
 
-You can configure any TaskKey in the above way
+You can configure any (and as many as you like) sbt `TaskKey`s in the above way.
 
 ### Stacking
 
-The way sbt-sound works is by adding `mapR` to every task's completion. Because the functionality is tucked on every task, running tasks that depend on other tasks (and execute them), will cause all sounds in the chain to play. So if for example you specify a sound for `compile` and `test`, and when running `test` the code compiles because of the `compile` command, both sounds will play. Take that into consideration when configuration which tasks to play sounds for.
+The way sbt-sound works is by adding `task <<= (task) mapR { ... }` to every task's completion. Because the functionality is tucked on every task you configure in `build.sbt`, running tasks that depend on other tasks (and execute them), will cause all sounds in the chain to play. So if, for example, you specify a sound for `compile` and `test`, and when running `test` the code compiles because of the `compile` command, both sounds will play. Take that into consideration when configuration which tasks to play sounds for. The easiest way to avoid this problem is to define sounds for failing actions, which usually don't trigger the following tasks, thus solving this "problem".
 
 ## Feedback
 
