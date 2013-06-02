@@ -1,17 +1,22 @@
 # sbt-sound
 
-An [sbt](http://www.scala-sbt.org/) (Simple Build Tool) plugin for generating [Sublime Text 2](http://www.sublimetext.com/) (or 3 – [now in beta](http://www.sublimetext.com/blog/articles/sublime-text-3-beta)) project files with library dependencies' sources. See [example screenshot](https://github.com/orrsella/sbt-sublime#example).
+An [sbt](http://www.scala-sbt.org/) (Simple Build Tool) plugin for adding sounds to sbt's task completions.
 
-The main goal of this plugin is to make dependency source files easily available in the project's Sublime window. This enables the ability to simultaneously code and browse all your dependencies' source code, similar to functionality that IntelliJ and other IDEs provide you with. This also means that external library source code plays nice with Sublime's excellent Goto Anything feature. It could also be useful for split editing. Don't remember a method's signature in `scala.collection.immutable.List`? Just hit CMD+T, enter "List" and the source is right in front of you (the scala-library is always a dependency so you have the entire Scala language code base a click away).
+This plugin allows you to associate sounds with successful and/or failed task completions, giving you audio feedback. Any TaskKey can have a sound association. This is especially useful for:
 
-See [Functionality](https://github.com/orrsella/sbt-sublime#functionality) and [Notes](https://github.com/orrsella/sbt-sublime#notes) for more details, and [this post](http://orrsella.com/post/41697838000/scala-development-using-sublime-text-2) for some background.
+* Long build times
+* A failing `~compile` that is running in the background/behind other windows
+* A failing `~test`
+* Drawing your attention to any specific task outcome
+
+The reason I wrote this plugin is that I usually code with a running sbt `~compile` in the background, and would like to know asap when something brakes. I code in [Sublime Text](http://www.sublimetext.com/) (see [my plugin for it](https://github.com/orrsella/sbt-sublime)), and when I'm not connected to an external monitor I have sbt in the background, periodically checking it to see everything's fine. This plugin solves this problem for me, only drawing my attention when the build breaks. I think others could find this plugin useful in other ways as well.
 
 ## Add Plugin
 
-To add sbt-sublime functionality to your project add the following to your `project/plugins.sbt` file:
+To add sbt-sound functionality to your project add the following to your `project/plugins.sbt` file:
 
 ```scala
-addSbtPlugin("com.orrsella" % "sbt-sublime" % "1.0.5")
+addSbtPlugin("com.orrsella" % "sbt-sound" % "1.0.1")
 ```
 
 If you want to use it for more than one project, you can add it to your global plugins file, usually found at: `~/.sbt/plugins/plugins.sbt` and then have it available for all sbt projects. See [Using Plugins](http://www.scala-sbt.org/release/docs/Getting-Started/Using-Plugins.html) for additional information on sbt plugins.
@@ -23,7 +28,7 @@ If you want to use it for more than one project, you can add it to your global p
 
 ### Troubleshooting
 
-If you added the plugin globally but still don't have the `gen-sublime` command available, try:
+If you added the plugin globally but still don't have it available, try:
 
 ```
 $ sbt
@@ -33,12 +38,6 @@ $ sbt
 ```
 
 Essentially, this enters the `project` project, cleans it, and returns back to your main project (remember that [sbt is recursive](http://www.scala-sbt.org/release/docs/Getting-Started/Full-Def.html#sbt-is-recursive) – each `project/` folder is an sbt project in itself!).
-
-## Example
-
-As an example, here's the project file generated for [Twitter's bijection](https://github.com/twitter/bijection) project. The first folder, `bijection`, is the project's root as cloned from GitHub. The `External Libraries` folder is the generated external sources folder, showing all available dependencies' sources, readily available for you to browse or search (BTW, in case you're wondering, the theme I'm using is  the immensely popular Soda Light):
-
-![alt text](https://raw.github.com/orrsella/sbt-sublime/master/img/screenshot1.png "Generated project for Twitter's bijection")
 
 ## Usage
 

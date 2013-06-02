@@ -1,9 +1,8 @@
 package com.orrsella.sbtsound
 
-import java.io.{ InputStream, FileInputStream }
+import java.io.{InputStream, FileInputStream}
 import sbt._
-import scala.io.Source
-import sun.audio.{ AudioStream, AudioPlayer }
+import sun.audio.{AudioStream, AudioPlayer}
 
 object SbtSound extends Plugin {
   abstract class Sound {
