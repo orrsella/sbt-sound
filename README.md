@@ -81,17 +81,24 @@ You can configure any sbt `TaskKey` (and as many as you like) in the above way.
 
 #### Build.scala
 
-If you use a `.scala` build file, you can add the following:
+If you're using a `.scala` build file, you can add the following:
 
 ```scala
-lazy val settings =
-  Defaults.defaultSettings ++
-  ... ++
-  sound.play(installDevice in AndroidKeys.Android, "/Users/mark/Documents/Quatsch/Hoo.wav")
+import com.orrsella.sbtsound.SbtSound._
+
+object MyBuild extends Build {
+  lazy val main = Project (
+    "my-proj",
+    file("."),
+    settings =
+      Defaults.defaultSettings ++
+      ... ++
+      sound.play(installDevice in AndroidKeys.Android, "/Users/mark/Documents/Quatsch/Hoo.wav")
+  )
 }
 ```
 
-(above example curtsey of @i-am-the-slime, code can be found [here](https://gist.github.com/i-am-the-slime/fc207e61d50e29fe2837/#comment-852708))
+Above example curtsey of [@i-am-the-slime](https://github.com/i-am-the-slime) – it alerts when an entire build is done (using the [sbt android-plugin](https://github.com/jberkel/android-plugin) to also install on the device). Project build code can be found [here](https://gist.github.com/i-am-the-slime/fc207e61d50e29fe2837/#comment-852708).
 
 ### Stacking
 
