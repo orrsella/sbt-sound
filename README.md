@@ -64,6 +64,8 @@ You can also specify any `.wav` or `.aiff` file on your local machine (maybe oth
 
 ### Configuration
 
+#### build.sbt
+
 After enabling the plugin as detailed above, you can configure it by adding any of the following to `build.sbt`:
 
 ```scala
@@ -75,7 +77,21 @@ sound.play(test in Test, Sounds.Purr, "/Users/me/Sounds/my-sound.wav") // play '
                                                                        // or the wav file 'my-sound' when it fails
 ```
 
-You can configure any (and as many as you like) sbt `TaskKey`s in the above way.
+You can configure any sbt `TaskKey` (and as many as you like) in the above way.
+
+#### Build.scala
+
+If you use a `.scala` build file, you can add the following:
+
+```scala
+lazy val settings =
+  Defaults.defaultSettings ++
+  ... ++
+  sound.play(installDevice in AndroidKeys.Android, "/Users/mark/Documents/Quatsch/Hoo.wav")
+}
+```
+
+(above example curtsey of @i-am-the-slime, code can be found [here](https://gist.github.com/i-am-the-slime/fc207e61d50e29fe2837/#comment-852708))
 
 ### Stacking
 
