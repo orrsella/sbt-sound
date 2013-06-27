@@ -85,6 +85,7 @@ If you're using a `.scala` build file, you can add the following:
 
 ```scala
 import com.orrsella.sbtsound.SbtSound._
+...
 
 object MyBuild extends Build {
   lazy val main = Project (
@@ -98,7 +99,7 @@ object MyBuild extends Build {
 }
 ```
 
-Above example curtsey of [@i-am-the-slime](https://github.com/i-am-the-slime) – it alerts when an entire build is done (using the [sbt android-plugin](https://github.com/jberkel/android-plugin) to also install on the device). Project build code can be found [here](https://gist.github.com/i-am-the-slime/fc207e61d50e29fe2837/#comment-852708).
+Above example curtsey of [@i-am-the-slime](https://github.com/i-am-the-slime) – it alerts when an entire build is complete (using the [sbt android-plugin](https://github.com/jberkel/android-plugin) to also install on the device). Project build definition code can be found [here](https://gist.github.com/i-am-the-slime/fc207e61d50e29fe2837/#comment-852708).
 
 ### Stacking
 
