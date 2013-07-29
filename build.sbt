@@ -4,7 +4,7 @@ name := "sbt-sound"
 
 organization := "com.orrsella"
 
-version := "1.0.2"
+version := "1.0.3-SNAPSHOT"
 
 // scalaVersion := "2.10.1"
 
