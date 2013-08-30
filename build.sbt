@@ -4,7 +4,7 @@ name := "sbt-sound"
 
 organization := "com.orrsella"
 
-version := "1.0.3"
+version := "1.0.4-SNAPSHOT"
 
 scalaVersion in Global := "2.10.2"
 
@@ -12,9 +12,6 @@ scalaVersion in Global := "2.10.2"
 
 // publishing
 crossScalaVersions := Seq("2.10.2")
-
-// sbtVersion in Global := "0.12.4"
-// sbtVersion in Global := "0.13.0"
 
 publishTo <<= version { v: String =>
   val nexus = "https://oss.sonatype.org/"
