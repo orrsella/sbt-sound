@@ -1,17 +1,35 @@
 # sbt-sound
 
-project/plugins.sbt
+Enable sbt-sound as a global plugin:
+
+~/.sbt/1.0/plugins/plugins.sbt
 
 ```scala
 resolvers += Resolver.url("masseguillaume", url("https://dl.bintray.com/masseguillaume/sbt-plugins"))(Resolver.ivyStylePatterns)
 addSbtPlugin("com.github.masseguillaume" % "sbt-sound" % "1.0.6")
 ```
 
+It will enable
+
+```
+compile in Compile
+compile in Test
+test in Test
+```
+
+If you want to customize, enable sbt-sound as a project plugin:
+
+project/plugins.sbt
+
+Same as above
+
 build.sbt
 
 ```scala
-sound.play(task, success = Sounds.Glass, failure = Sounds.Basso)
+sound.play(compile / Compile, success = Sounds.Glass, failure = Sounds.Basso)
 ```
+
+Sounds:
 
 * Basso
 * Blow
@@ -27,12 +45,3 @@ sound.play(task, success = Sounds.Glass, failure = Sounds.Basso)
 * Sosumi
 * Submarine
 * Tink
-
-
-### By default
-
-```
-compile in Compile
-compile in Test
-test in Test
-```

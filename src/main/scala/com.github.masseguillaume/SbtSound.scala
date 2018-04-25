@@ -10,12 +10,14 @@ import sbt.plugins.JvmPlugin
 object SbtSound extends AutoPlugin {
   override def trigger: PluginTrigger = allRequirements
   override def requires: Plugins = JvmPlugin
-  override lazy val projectSettings: Seq[Setting[_]] =
+  override lazy val projectSettings: Seq[Setting[_]] = {
+    import autoImport._
     Seq(
-      autoImport.sound.play(compile in Compile),
-      autoImport.sound.play(compile in Test),
-      autoImport.sound.play(test in Test)
+      sound.play(compile in Compile),
+      sound.play(compile in Test),
+      sound.play(test in Test, Sounds.Glass, Sounds.Basso)
     )
+  }
     
 
   object autoImport {
