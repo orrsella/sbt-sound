@@ -2,11 +2,10 @@
 
 Enable sbt-sound as a global plugin:
 
-~/.sbt/1.0/plugins/plugins.sbt
+`~/.sbt/1.0/plugins/plugins.sbt` or `~/.sbt/0.13/plugins/plugins.sbt`
 
 ```scala
-resolvers += Resolver.url("masseguillaume", url("https://dl.bintray.com/masseguillaume/sbt-plugins"))(Resolver.ivyStylePatterns)
-addSbtPlugin("com.github.masseguillaume" % "sbt-sound" % "1.0.6")
+addSbtPlugin("com.github.masseguillaume" % "sbt-sound" % "1.0.7")
 ```
 
 It will enable

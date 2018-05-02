@@ -4,7 +4,9 @@ name := "sbt-sound"
 
 organization := "com.github.masseguillaume"
 
-version := "1.0.7-SNAPSHOT"
+version := "1.0.7"
+
+crossSbtVersions := Seq("0.13.17", "1.1.2")
 
 scmInfo := Some(ScmInfo(
   browseUrl = url("https://github.com/MasseGuillaume/sbt-sound"),
