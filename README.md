@@ -16,28 +16,11 @@ The reason I wrote this plugin is that I usually code with a running sbt `~compi
 To add sbt-sound functionality to your project add the following to your `project/plugins.sbt` file:
 
 ```scala
+addSbtPlugin("com.orrsella" % "sbt-sound" % "1.0.5")
+
+// For sbt 0.12.x, 0.13.x:
 addSbtPlugin("com.orrsella" % "sbt-sound" % "1.0.4")
 ```
-
-If you want to use it for more than one project, you can add it to your global plugins file, usually found at: `~/.sbt/plugins/plugins.sbt` and then have it available for all sbt projects. See [Using Plugins](http://www.scala-sbt.org/release/docs/Getting-Started/Using-Plugins.html) for additional information on sbt plugins.
-
-### Requirements
-
-* sbt 0.12.x, 0.13.x
-* Scala 2.9.x, 2.10.x
-
-### Troubleshooting
-
-If you added the plugin globally but still don't have it available, try:
-
-```
-$ sbt
-> reload plugins
-> clean
-> reload return
-```
-
-Essentially, this enters the `project` project, cleans it, and returns back to your main project (remember that [sbt is recursive](http://www.scala-sbt.org/release/docs/Getting-Started/Full-Def.html#sbt-is-recursive) – each `project/` folder is an sbt project in itself!).
 
 ## Usage
 
@@ -66,9 +49,11 @@ You can also specify any `.wav` or `.aiff` file on your local machine (maybe oth
 
 #### build.sbt
 
-After enabling the plugin as detailed above, you can configure it by adding any of the following to `build.sbt`:
+After enabling the plugin, you can configure it by adding any of the following to `build.sbt`:
 
 ```scala
+import SbtSound._
+
 sound.play(compile in Compile, Sounds.Basso) // play the 'Basso' sound whenever compile completes (successful or not)
 
 sound.play(compile in Compile, Sounds.None, Sounds.Pop) // play the 'Pop' sound only when compile fails

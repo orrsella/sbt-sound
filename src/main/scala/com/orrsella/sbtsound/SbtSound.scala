@@ -4,7 +4,7 @@ import java.io.{InputStream, FileInputStream}
 import sbt._
 import sun.audio.{AudioStream, AudioPlayer}
 
-object SbtSound extends Plugin {
+object SbtSound extends AutoPlugin {
   abstract class Sound {
     def play()
     def play(input: InputStream) {
@@ -52,13 +52,17 @@ object SbtSound extends Plugin {
     def play[T](t: TaskKey[T], suc: Sound, fail: String): Setting[Task[T]] = play(t, suc, FileSound(fail))
     def play[T](t: TaskKey[T], suc: String, fail: String): Setting[Task[T]] = play(t, FileSound(suc), FileSound(fail))
 
-    def play[T](t: TaskKey[T], suc: Sound, fail: Sound): Setting[Task[T]] = t <<= (t) mapR {
-      case Inc(inc: Incomplete) =>
-        if (fail != Sounds.None) fail.play()
-        throw inc
-      case Value(value) =>
-        if (suc != Sounds.None) suc.play()
-        value
+    def play[T](t: TaskKey[T], suc: Sound, fail: Sound): Setting[Task[T]] = {
+      t := {
+        t.result.value match {
+          case Inc(inc: Incomplete) =>
+            if (fail != Sounds.None) fail.play()
+            throw inc
+          case Value(value) =>
+            if (suc != Sounds.None) suc.play()
+            value
+        }
+      }
     }
   }
 }
