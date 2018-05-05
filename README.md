@@ -16,7 +16,7 @@ The reason I wrote this plugin is that I usually code with a running sbt `~compi
 To add sbt-sound functionality to your project add the following to your `project/plugins.sbt` file:
 
 ```scala
-addSbtPlugin("com.orrsella" % "sbt-sound" % "1.0.5")
+addSbtPlugin("com.orrsella" % "sbt-sound" % "1.0.6")
 
 // For sbt 0.12.x, 0.13.x:
 addSbtPlugin("com.orrsella" % "sbt-sound" % "1.0.4")
